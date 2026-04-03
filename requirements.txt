@@ -1,5 +1,6 @@
 flask==3.1.0
-pandas==2.2.3
-numpy==2.2.4
+pandas
+numpy
 gunicorn==23.0.0
-python-dotenv==1.1.0plotly==6.6.0
+python-dotenv==1.1.0
+plotly==6.6.0
