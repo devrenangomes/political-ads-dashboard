@@ -51,7 +51,7 @@ ehthumbs.db
 Desktop.ini
  
 # Dados brutos (não versionar CSVs grandes)
-data/*.csv
+# data/*.csv (Comentado para liberar os dados do projeto da faculdade)
 data/*.xlsx
 data/*.json
 !data/.gitkeep
