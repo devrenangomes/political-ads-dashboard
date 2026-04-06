@@ -1,9 +1,7 @@
 from flask import Flask
 
-def create_app():
-    app = Flask(__name__)
+# Inicializa o aplicativo Flask
+app = Flask(__name__)
 
-    from app.controllers.dashboard_controller import dashboard_bp
-    app.register_blueprint(dashboard_bp)
-
-    return app
+# Importa as rotas 
+from app.controllers import routes
