@@ -3,11 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Ameaças Cibernéticas</title>
+    <title>CyberThreats - Executive Analytics</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Fontes Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        function updateFilter(param, value) {
+            const url = new URL(window.location);
+            if (value) {
+                url.searchParams.set(param, value);
+            } else {
+                url.searchParams.delete(param);
+            }
+            window.location.href = url.toString();
+        }
+        function clearFilters() {
+            window.location.href = '/';
+        }
+    </script>
 
     <style>
+        :root {
+            --bg-dark: #07090f;
+            --card-glass: rgba(17, 24, 39, 0.65);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -15,148 +43,329 @@
         }
 
         body { 
-            font-family: 'Inter', system-ui, sans-serif; 
-            background-color: #0f172a; 
-            color: #e2e8f0; 
-            padding-bottom: 40px;
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-dark);
+            color: var(--text-main); 
+            min-height: 100vh;
+            /* Fundo moderno com gradientes radiais suaves simulando luzes LED de sala de segurança */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(6, 182, 212, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.08), transparent 25%);
+            background-attachment: fixed;
+            padding-bottom: 60px;
         }
 
-        header {
-            background-color: #1e293b;
-            padding: 30px 20px;
-            text-align: center;
-            border-bottom: 2px solid #0ea5e9; 
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            margin-bottom: 40px;
+        /* --- NAVBAR TOP PREMIUM --- */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 9, 15, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        h1 { 
-            color: #f8fafc; 
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand i {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand h1 {
+            font-family: 'Outfit', sans-serif;
             font-weight: 700;
-            font-size: 2rem;
-            letter-spacing: -0.5px;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .brand span {
+            font-weight: 300;
+            color: var(--text-muted);
         }
 
+        /* --- CHAT HEADER E FILTROS INLINE --- */
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 5px 10px 10px 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .chart-title {
+            color: var(--accent-cyan);
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+
+        .chart-title::before {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 16px;
+            background-color: var(--accent-cyan);
+            margin-right: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.6);
+        }
+
+        .inline-filter {
+            background-color: rgba(15, 23, 42, 0.8);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 30px 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .inline-filter:focus, .inline-filter:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-main);
+        }
+
+        /* Botão super clean no header global de limpar */
+        .btn-limpar-global {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-limpar-global:hover {
+            color: white;
+            border-color: white;
+        }
+
+        /* --- DASHBOARD GRID --- */
         .dashboard-grid {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 24px;
         }
 
-        /* Container agora empilha o título e o gráfico de cima para baixo */
         .grafico-container { 
-            background: #1e293b; 
-            padding: 24px; 
+            background: var(--card-glass); 
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 2px; /* padding minúsculo pro glow */
             border-radius: 16px; 
-            border: 1px solid #334155; 
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); 
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column; /* Coloca o título em cima e o gráfico embaixo */
-            min-height: 350px; 
+            border: 1px solid var(--card-border); 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Gradiente animado on hover no card (borda luminosa) */
+        .grafico-container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 16px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.5;
+            transition: opacity 0.4s ease;
         }
 
         .grafico-container:hover {
-            transform: translateY(-5px);
-            border-color: #0ea5e9;
-            box-shadow: 0 15px 25px -5px rgba(14, 165, 233, 0.15);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(6, 182, 212, 0.3);
         }
 
-        /* --- NOVO ESTILO DOS TÍTULOS DOS GRÁFICOS --- */
-        .titulo-grafico {
-            color: #0ea5e9; /* Azul ciano */
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #334155; /* Linha divisória sutil */
-            width: 100%;
+        .grafico-container:hover::before {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            opacity: 1;
+        }
+
+        /* Container interno real, onde vai o conteúdo (para proteger do ::before gradient) */
+        .grafico-inner {
+            background: #111827; /* Fundo sólido bem escuro para o Plotly encaixar */
+            border-radius: 14px;
+            padding: 10px 20px;
+            height: 100%;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            z-index: 1;
         }
 
-        /* Barra vertical neon ao lado do título */
-        .titulo-grafico::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 18px;
-            background-color: #0ea5e9;
-            margin-right: 12px;
-            border-radius: 4px;
-            box-shadow: 0 0 8px rgba(14, 165, 233, 0.6); /* Brilho neon */
-        }
-
-        /* Div que engloba o gráfico gerado pelo Python */
         .grafico-conteudo {
             width: 100%;
-            flex-grow: 1; /* Preenche o espaço restante */
+            flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 380px;
         }
 
         .grafico-destaque {
             grid-column: 1 / -1; 
-            min-height: 450px;
         }
 
         @media (max-width: 768px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
-            .grafico-container {
-                min-height: 300px;
+            .topbar {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .filtros-container form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filtro-grupo select {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Dashboard Global de Ameaças Cibernéticas</h1>
-    </header>
+    <div class="topbar">
+        <div class="brand">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h1>CyberThreats <span>Analytics</span></h1>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <button onclick="clearFilters()" class="btn-limpar-global"><i class="fa-solid fa-rotate-left"></i> Reset Dashboard</button>
+            <div style="font-size: 0.85rem; color: var(--text-muted);">
+                <i class="fa-solid fa-circle-dot" style="color: #10b981; font-size: 0.6rem; margin-right: 6px;"></i> Live Environment
+            </div>
+        </div>
+    </div>
 
-    <div class="dashboard-grid">
+    <!-- DASHBOARD -->
+    <div class="dashboard-grid" style="margin-top: 40px;">
         
+        <!-- GRÁFICO 1 -->
         <div class="grafico-container grafico-destaque">
-            <h2 class="titulo-grafico">Total de Ataques por Ano</h2>
-            <div class="grafico-conteudo">
-                {{ grafico1 | safe }}
+            <div class="grafico-inner">
+                <div class="chart-header">
+                    <h2 class="chart-title">Ataques por Ano</h2>
+                    <select class="inline-filter" onchange="updateFilter('g1_ind', this.value)">
+                        <option value="">Indústria Alvo (Todas)</option>
+                        {% for ind in industrias %}
+                            <option value="{{ ind }}" {% if g1_ind == ind %}selected{% endif %}>{{ ind }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="grafico-conteudo">
+                    {{ grafico1 | safe }}
+                </div>
             </div>
         </div>
 
+        <!-- GRÁFICO 2 -->
         <div class="grafico-container">
-            <h2 class="titulo-grafico">Top 10 Países com Maior Prejuízo</h2>
-            <div class="grafico-conteudo">
-                {{ grafico2 | safe }}
+            <div class="grafico-inner">
+                 <div class="chart-header">
+                    <h2 class="chart-title">Top 10 Países</h2>
+                    <select class="inline-filter" onchange="updateFilter('g2_ano', this.value)">
+                        <option value="">Filtro Temporal (Todos)</option>
+                        {% for a in anos %}
+                            <option value="{{ a }}" {% if g2_ano == a|string %}selected{% endif %}>Ano {{ a }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="grafico-conteudo">
+                    {{ grafico2 | safe }}
+                </div>
             </div>
         </div>
 
+        <!-- GRÁFICO 3 -->
         <div class="grafico-container">
-            <h2 class="titulo-grafico">Frequência: Tipo de Ataque x Indústria</h2>
-            <div class="grafico-conteudo">
-                {{ grafico3 | safe }}
+            <div class="grafico-inner">
+                 <div class="chart-header">
+                    <h2 class="chart-title">Padrões de Ataque</h2>
+                    <select class="inline-filter" onchange="updateFilter('g3_sev', this.value)">
+                        <option value="">Severidade (Todas)</option>
+                        {% for sev in severidades %}
+                            <option value="{{ sev }}" {% if g3_sev == sev|string %}selected{% endif %}>Severidade: {{ sev|capitalize }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="grafico-conteudo">
+                    {{ grafico3 | safe }}
+                </div>
             </div>
         </div>
 
+        <!-- GRÁFICO 4 -->
         <div class="grafico-container">
-            <h2 class="titulo-grafico">Tempo Médio de Resolução</h2>
-            <div class="grafico-conteudo">
-                {{ grafico4 | safe }}
+            <div class="grafico-inner">
+                 <div class="chart-header">
+                    <h2 class="chart-title">Resoluções por Defesa</h2>
+                    <select class="inline-filter" onchange="updateFilter('g4_atk', this.value)">
+                        <option value="">Tipo de Ataque (Todos)</option>
+                        {% for atk in ataques %}
+                            <option value="{{ atk }}" {% if g4_atk == atk|string %}selected{% endif %}>{{ atk }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="grafico-conteudo">
+                    {{ grafico4 | safe }}
+                </div>
             </div>
         </div>
 
+        <!-- GRÁFICO 5 -->
         <div class="grafico-container">
-            <h2 class="titulo-grafico">Severidade por Tipo de Ataque</h2>
-            <div class="grafico-conteudo">
-                {{ grafico5 | safe }}
+            <div class="grafico-inner">
+                <div class="chart-header">
+                    <h2 class="chart-title">Níveis de Severidade</h2>
+                    <select class="inline-filter" onchange="updateFilter('g5_ind', this.value)">
+                        <option value="">Indústria Alvo (Todas)</option>
+                        {% for ind in industrias %}
+                            <option value="{{ ind }}" {% if g5_ind == ind %}selected{% endif %}>{{ ind }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="grafico-conteudo">
+                    {{ grafico5 | safe }}
+                </div>
             </div>
         </div>
 
