@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, request
 import plotly.express as px
 
-# 1. Importando TODAS as funções que você criou no ads_model.py
+
 from app.models.ads_model import (
     load_data, 
     ataques_por_ano, 
